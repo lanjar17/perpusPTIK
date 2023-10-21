@@ -60,7 +60,7 @@ class User extends BaseController
         $nama = $this->request->getVar('namadepan') . " " . $this->request->getVar('namabelakang');
         if ($this->request->getFile('avatar')->getName() != '') {
             $avatar = $this->request->getFile('avatar');
-            $avatar->move(ROOTPATH . 'public/images/avatar');
+            $avatar->move(ROOTPATH . 'public/img/avatar');
             $namaavatar = $avatar->getName();
         } else {
             $namaavatar = 'default.jpg';

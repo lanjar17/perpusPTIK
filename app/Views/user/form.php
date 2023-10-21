@@ -57,12 +57,12 @@
                                 Jenis Kelamin :
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="jenis_kelamin" value="laki-laki" />
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="jenis_kelamin" value="Laki-laki" />
                                 <label class="form-check-label" for="laki">Laki-Laki</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="jenis_kelamin" value="perempuan" />
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="jenis_kelamin" value="Perempuan" />
                                 <label class="form-check-label" for="perempuan">Perempuan</label>
                             </div>
                         </div>

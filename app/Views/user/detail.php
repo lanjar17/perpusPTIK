@@ -93,7 +93,7 @@
                         <div class="col col-4">
                             <div class="card text-center">
                                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                    <img src="/img/<?= $item['avatar'] ?>" class="img-fluid" width="250px">
+                                    <img src="/img/avatar/<?= $item['avatar'] ?>" class="img-fluid" width="250px">
                                     <a href="">
                                         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                                     </a>

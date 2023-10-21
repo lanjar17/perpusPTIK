@@ -30,7 +30,7 @@
                                 <th>Foto</th>
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>Detail</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
 
@@ -40,10 +40,13 @@
                             <tbody>
                                 <tr>
                                     <td><?= $no++ ?></td>
-                                    <td><img src="/img/<?= $item['avatar'] ?>" alt="" width="100px"></td>
+                                    <td><img src="/img/avatar/<?= $item['avatar'] ?>" alt="" width="100px"></td>
                                     <td><?= $item['username'] ?> </td>
                                     <td><?= $item['email'] ?> </td>
-                                    <td><a class="btn btn-success" href="<?= base_url('user/' . $item['username']); ?>">Detail</a></td>
+                                    <td>
+                                        <a class="btn btn-success" href="<?= base_url('user/' . $item['username']); ?>">Detail</a> <p></p>
+                                        <a class="btn btn-danger" href="<?= base_url('user/' . $item['username']); ?>">Hapus</a>
+                                    </td>
                                 </tr>
                             </tbody>
 
