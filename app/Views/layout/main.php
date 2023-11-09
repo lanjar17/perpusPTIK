@@ -17,6 +17,8 @@
     <link rel="stylesheet" type="text/css" href=<?php base_url('datatables/datatables.min.css'); ?> />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -42,7 +44,7 @@
     <script>
         function tampilkan() {
             $.ajax({
-                url: "<?php base_url('/user/data') ?>",
+                url: "<?= base_url('/user/data') ?>",
                 dataType: "json",
                 success: function(response) {
                     $('#viewdata').html(response.data);
