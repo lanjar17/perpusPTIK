@@ -32,24 +32,24 @@ class User extends BaseController
     {
         $userModel = new UserModel();
         $data =
-        [
-            'menu' => 'halUser',
-            'nama' => "Administrator",
-            'link' => "user",
-            'item' => $userModel->getDetail($username)
-        ];
+            [
+                'menu' => 'halUser',
+                'nama' => "Administrator",
+                'link' => "user",
+                'item' => $userModel->getDetail($username)
+            ];
         return view('user/detail', $data);
     }
 
     public function create()
     {
         $userModel = new UserModel();
-        $data = 
-        [
-            'menu' => 'halUser',
-            'nama' => 'Administrator',
-            'link' => 'user'
-        ];
+        $data =
+            [
+                'menu' => 'halUser',
+                'nama' => 'Administrator',
+                'link' => 'user'
+            ];
         return view('user/form', $data);
     }
 
@@ -111,7 +111,6 @@ class User extends BaseController
         ];
 
         $userModel->save($data);
-        
     }
 
     public function insertAjax()
@@ -132,18 +131,48 @@ class User extends BaseController
                 'label' => 'Nama Belakang',
                 'rules' => 'required',
                 'errors' => ['required' => '{field} tidak boleh kosong']
-            ]
+            ],
+            'username' => [
+                'label' => 'Username',
+                'rules' => 'required|min_length[5]|is_unique[users.username]',
+                'errors' => [
+                    'is_unique' => '{field} sudah terdaftar',
+                    'required' => '{field} tidak boleh kosong',
+                    'min_length' => '{field} minimal 5 karakter'
+                ]
+                ],
+            'password' => [
+                'label' => 'Password',
+                'rules' => 'required|min_length[5]|regex_match[/^(?=.*?\d)(?=.*?[a-zA-Z])[a-zA-Z\d]+$/]',
+                'errors' => [
+                    'regex_match' => '{field} terdiri dari angka dan huruf',
+                    'required' => '{field} tidak boleh kosong',
+                    'min_length' => '{field} minimal 10 karakter'
+                ]
+            ],
+            'conpass' => [
+                'label' => 'Ulangi Password',
+                'rules' => 'required|min_length[3]|matches[password]',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                    'min_length' => '{field} minimal 10 karakter',
+                    'matches' => '{field} tidak sesuai'
+                ]
+            ],
         ]);
 
-        if(!$valid){
+        if (!$valid) {
             $pesan = [
                 'error' => [
                     'namadepan' => $validasi->getError('namadepan'),
                     'namabelakang' => $validasi->getError('namabelakang'),
+                    'username' => $validasi->getError('username'),
+                    'password' => $validasi->getError('password'),
+                    'conpass' => $validasi->getError('conpass'),
                 ]
             ];
             return $this->response->setJSON($pesan);
-        } else{
+        } else {
             $nama = $this->request->getVar('namadepan') . " " . $this->request->getVar('namabelakang');
             if ($this->request->getFile('avatar')->getName() != '') {
                 $avatar = $this->request->getFile('avatar');
@@ -152,7 +181,7 @@ class User extends BaseController
             } else {
                 $namaavatar = 'default.jpg';
             }
-        }        
+        }
 
         $data = [
             'nama' => $nama,
@@ -175,7 +204,7 @@ class User extends BaseController
         return $this->response->setJSON($pesan);
     }
 
-    
+
     public function getData()
     {
         if ($this->request->isAJAX()) {

@@ -22,7 +22,7 @@
                             <div class="form-label">
                                 <label class="form-label" for="nb">Nama Belakang</label>
                                 <input type="text" id="nb" class="form-control" name="namabelakang" />
-                                <div class="invalid-feedback" id="errornd"></div>
+                                <div class="invalid-feedback" id="errornb"></div>
                             </div>
                         </div>
                     </div>
@@ -82,12 +82,21 @@
                     <div class="form-label mb-4">
                         <label class="form-label" for="username">Username</label>
                         <input type="text" id="username" class="form-control" name="username" />
+                        <div class="invalid-feedback" id="errorusername"></div>
                     </div>
 
                     <!-- Password -->
                     <div class="form-label mb-4">
                         <label class="form-label" for="password">Password</label>
                         <input type="password" id="password" class="form-control" name="password" />
+                        <div class="invalid-feedback" id="errorpassword"></div>
+                    </div>
+
+                    <!-- Konfirmasi Password -->
+                    <div class="form-label mb-4">
+                        <label class="form-label" for="conpass">Konfirmasi Password</label>
+                        <input type="password" id="conpass" class="form-control" name="conpass" />
+                        <div class="invalid-feedback" id="errorconpass"></div>
                     </div>
 
                     <!--Avatar-->
