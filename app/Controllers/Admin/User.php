@@ -28,15 +28,14 @@ class User extends BaseController
         return view('user/user', $data);
     }
 
-    public function detail($username)
+    public function detail($id_users)
     {
         $userModel = new UserModel();
         $data =
             [
                 'menu' => 'halUser',
-                'nama' => "Administrator",
-                'link' => "user",
-                'item' => $userModel->getDetail($username)
+                'item' => $this->userModel->find($id_users)
+                // 'item' => $userModel->getDetail($id_users)
             ];
         return view('user/detail', $data);
     }
@@ -51,6 +50,16 @@ class User extends BaseController
                 'link' => 'user'
             ];
         return view('user/form', $data);
+    }
+
+    public function tambah()
+    {
+        if ($this->request->isAjax()) {
+            $hasil = ['data' => view('user/tambah')];
+        } else {
+            exit('Data tidak dapat diload');
+        }
+        return $this->response->setJSON($hasil);
     }
 
     public function insert()
@@ -140,7 +149,7 @@ class User extends BaseController
                     'required' => '{field} tidak boleh kosong',
                     'min_length' => '{field} minimal 5 karakter'
                 ]
-                ],
+            ],
             'password' => [
                 'label' => 'Password',
                 'rules' => 'required|min_length[5]|regex_match[/^(?=.*?\d)(?=.*?[a-zA-Z])[a-zA-Z\d]+$/]',
@@ -155,8 +164,8 @@ class User extends BaseController
                 'rules' => 'required|min_length[3]|matches[password]',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
-                    'min_length' => '{field} minimal 10 karakter',
-                    'matches' => '{field} tidak sesuai'
+                    'matches' => '{field} tidak sesuai',
+                    'min_length' => '{field} minimal 10 karakter'
                 ]
             ],
         ]);
@@ -192,7 +201,7 @@ class User extends BaseController
             'telepon' => $this->request->getVar('telepon'),
             'email' => $this->request->getVar('email'),
             'username' => $this->request->getVar('username'),
-            'password' => md5($this->request->getVar('password')),
+            'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
             'avatar' => $namaavatar,
         ];
 
@@ -210,7 +219,7 @@ class User extends BaseController
         if ($this->request->isAJAX()) {
             $userModel = new UserModel();
             $data = [
-                'list' => $this->userModel->find()
+                'list' => $this->userModel->findAll()
             ];
             $hasil = [
                 'data' => view('user/list', $data)
@@ -221,6 +230,104 @@ class User extends BaseController
         }
         return $this->response->setJSON($hasil);
     }
+
+    public function edit($id_users)
+    {
+        if ($this->request->isAJAX()) {
+            $item = $this->userModel->find($id_users);
+            $nama = explode(" ", $item['nama']);
+            $data = [
+                'id' => $item['id'],
+                'nama_depan' => $nama[0],
+                'nama_belakang' => $nama[1],
+                'alamat' => $item['alamat'],
+                'tempat_lahir' => $item['tempat_lahir'],
+                'tanggal_lahir' => $item['tanggal_lahir'],
+                'jenis_kelamin' => $item['jenis_kelamin'],
+                'telepon' => $item['telepon'],
+                'email' => $item['email'],
+                'avatar' => $item['avatar']
+            ];
+            $hasil = [
+                'data' => view('user/edit', $data)
+            ];
+            return $this->response->setJSON($hasil);
+        } else {
+            exit('data tidak dapat diload');
+        }
+    }
+
+    public function update($id_users)
+    {
+        $validasi = \Config\Services::validation();
+
+        $valid = $this->validate([
+            'namadepan' => [
+                'label' => 'Nama Depan',
+                'rules' => 'required|min_length[10]',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                    'min_length' => '{field} minimal 10 karakter'
+                ]
+            ],
+            'namabelakang' => [
+                'label' => 'Nama Belakang',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong']
+            ],
+        ]);
+
+        if (!$valid) {
+            $pesan = [
+                'error' => [
+                    'namadepan' => $validasi->getError('namadepan'),
+                    'namabelakang' => $validasi->getError('namabelakang')
+                ]
+            ];
+            return $this->response->setJSON($pesan);
+        } else {
+            $nama = $this->request->getVar('namadepan') . " " . $this->request->getVar('namabelakang');
+            if ($this->request->getFile('avatar')->getName() != '') {
+                $avatar = $this->request->getFile('avatar');
+                $avatar->move(ROOTPATH . 'public/img/avatar');
+                $namaavatar = $avatar->getName();
+            } else {
+                $namaavatar = $this->request->getVar('avalama');
+            }
+        }
+
+        $input = [
+            'id_users' => $id_users,
+            'nama' => $nama,
+            'alamat' => $this->request->getVar('alamat'),
+            'tempat_lahir' => $this->request->getVar('tempat_lahir'),
+            'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
+            'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+            'telepon' => $this->request->getVar('telepon'),
+            'email' => $this->request->getVar('email'),
+            'avatar' => $namaavatar,
+        ];
+
+        $this->userModel->save($input);
+
+        $pesan = [
+            'sukses' => 'Data anggota berhasil diupdate '
+        ];
+        return $this->response->setJSON($pesan);
+    }
+    
+    public function delete($id_users)
+    {
+        if ($this->request->isAjax()) {
+            $this->userModel->delete($id_users);
+            $pesan = ['sukses' => "Data dengan ID = $id_users berhasil dihapus"];
+        } else {
+            exit('tidak dapat memproses data');
+        }
+        return $this->response->setJSON($pesan);
+    }
+
+
 
     // public function getForm()
     // {

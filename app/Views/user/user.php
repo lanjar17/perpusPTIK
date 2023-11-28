@@ -8,7 +8,7 @@
 
     <div class="container pt-4">
         <div id="viewmodal">
-            <?php echo $this->include('user/tambah'); ?>
+            <!-- diisi dengan modal -->
         </div>
         <section class="mb-4">
             <div class="card">
@@ -16,14 +16,9 @@
                     <h5 class="mb-0 text-center"><strong>Nama Mahasiswa</strong></h5>
                 </div>
                 <div class="card-body">
-                    <?php if (session()->getflashdata('sukses') != '') { ?>
-                        <div class="alert alert-success" role="alert">
-                            <?= session()->getflashdata('sukses'); ?>
-                        </div>
-                    <?php } ?>
                     <h1>Daftar Anggota</h1>
+                    <a id="tambah" class="btn btn-success btn-rounded mb-3" href="#" onclick="tambah()">Tambah Anggota AJAX</a>
                     <!-- <a class="btn btn-success btn-rounded mb-3" href="user/create">Tambah Anggota</a> -->
-
                     <div id="viewdata"></div>
 
 
@@ -50,10 +45,65 @@
             url: "<?= base_url('/user/data') ?>",
             dataType: "json",
             success: function(response) {
+                $('#viewdata').html('');
                 $('#viewdata').html(response.data);
             }
         });
     }
+
+    function tambah() {
+        $.ajax({
+            url: "<?= base_url('/user/tambah') ?>",
+            dataType: "json",
+            success: function(response) {
+                $('#viewmodal').html(response.data).show();
+                $('#anggotamodal').modal('show');
+            }
+        });
+
+    };
+
+    function edit(id_users) {
+        $.ajax({
+            url: "<?= base_url('/user/edit/') ?>/" + id_users,
+            dataType: "json",
+            success: function(response) {
+                $('#viewmodal').html(response.data).show();
+                $('#editmodal').modal('show');
+            }
+        });
+    }
+
+
+    function hapus(id_users) {
+        Swal.fire({
+            title: 'Hapus Data',
+            text: "Apakah Anda yakin menghapus data?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "delete",
+                    url: "<?= base_url('/user/delete/') ?>" + id_users,
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: response.sukses,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                        tampilkan();
+                    }
+                });
+            }
+        })
+    }
+
+
     $(document).ready(function() {
         tampilkan();
     });
