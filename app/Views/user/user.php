@@ -51,21 +51,9 @@
         });
     }
 
-    function tambah() {
-        $.ajax({
-            url: "<?= base_url('/user/tambah') ?>",
-            dataType: "json",
-            success: function(response) {
-                $('#viewmodal').html(response.data).show();
-                $('#anggotamodal').modal('show');
-            }
-        });
-
-    };
-
     function edit(id_users) {
         $.ajax({
-            url: "<?= base_url('/user/edit/') ?>/" + id_users,
+            url: "<?= base_url('/user/edit/') ?>" + id_users,
             dataType: "json",
             success: function(response) {
                 $('#viewmodal').html(response.data).show();
@@ -73,7 +61,6 @@
             }
         });
     }
-
 
     function hapus(id_users) {
         Swal.fire({
@@ -102,6 +89,18 @@
             }
         })
     }
+
+    function tambah() {
+        $.ajax({
+            url: "<?= base_url('/user/tambah') ?>",
+            dataType: "json",
+            success: function(response) {
+                $('#viewmodal').html(response.data).show();
+                $('#anggotamodal').modal('show');
+            }
+        });
+
+    };
 
 
     $(document).ready(function() {

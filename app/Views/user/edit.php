@@ -7,7 +7,8 @@
             </div>
             <div class="modal-body">
 
-                <form id="form" method="POST" action="/user/update/<?= $id_users ?>" enctype="multipart/form-data">
+                <form id="form" method="post" action="/user/update/<?= $id_users ?>" enctype="multipart/form-data">
+                    <input type="hidden" name="_method" value="PUT">
                     <?= csrf_field() ?>
                     <!-- Nama -->
                     <div class="row mb-4">
@@ -30,7 +31,7 @@
                     <!-- Alamat -->
                     <div class="form-label mb-4">
                         <label class="form-label" for="alamat">Alamat</label>
-                        <textarea class="form-control" id="alamat" rows="4" name="alamat" <?= $alamat ?>></textarea>
+                        <textarea class="form-control" id="alamat" rows="4" name="alamat"><?= $alamat ?></textarea>
                     </div>
 
                     <!-- TTL -->
@@ -148,47 +149,9 @@
             });
         });
     });
-
-
-
-    // $(document).ready(function() {
-    //     $('#form').submit(function(e) {
-    //         e.preventDefault();
-    //         $.ajax({
-    //             type: $(this).attr('method'),
-    //             url: $(this).attr('action'),
-    //             data: new FormData(this),
-    //             processData: false,
-    //             contentType: false,
-    //             success: function(response) {
-    //                 if (response.error) {
-    //                     if (response.error.namadepan) {
-    //                         $('#nd').addClass('is-invalid');
-    //                         $('#errornd').html(response.error.namadepan);
-    //                     } else {
-    //                         $('#nd').removeClass('is-invalid');
-    //                         $('#errornd').html('');
-    //                     }
-
-    //                     if (response.error.namabelakang) {
-    //                         $('#nb').addClass('is-invalid');
-    //                         $('#errornb').html(response.error.namabelakang);
-    //                     } else {
-    //                         $('#nb').removeClass('is-invalid');
-    //                         $('#errornb').html('');
-    //                     }
-    //                 } else {
-    //                     Swal.fire({
-    //                         title: 'Berhasil!',
-    //                         text: response.sukses,
-    //                         icon: 'success',
-    //                         confirmButtonText: 'Ok'
-    //                     })
-    //                     $('#anggotammodal').modal('hide');
-    //                     tampilkan();
-    //                 }
-    //             },
-    //         });
-    //     });
-    // });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#datatabel').DataTable();
+    });
 </script>

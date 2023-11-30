@@ -130,10 +130,10 @@ class User extends BaseController
         $valid = $this->validate([
             'namadepan' => [
                 'label' => 'Nama Depan',
-                'rules' => 'required|min_length[10]',
+                'rules' => 'required|min_length[4]',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
-                    'min_length' => '{field} minimal 10 karakter'
+                    'min_length' => '{field} minimal 4 karakter'
                 ]
             ],
             'namabelakang' => [
@@ -237,7 +237,7 @@ class User extends BaseController
             $item = $this->userModel->find($id_users);
             $nama = explode(" ", $item['nama']);
             $data = [
-                'id' => $item['id'],
+                'id_users' => $item['id_users'],
                 'nama_depan' => $nama[0],
                 'nama_belakang' => $nama[1],
                 'alamat' => $item['alamat'],
