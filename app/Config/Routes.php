@@ -20,5 +20,5 @@ $routes->post('/insertuser', 'Admin\User::insertAjax');
 $routes->put('/user/update/(:segment)', 'Admin\User::update/$1'); //fungsi ubah user
 $routes->delete('/user/delete/(:segment)', 'Admin\User::delete/$1'); //fungsi hapus user
 // $routes->get('/', 'Login::index');
-
+$routes->get('/testFaker', 'Faker::index');
 // $routes->post('/insertuser', 'Admin\User::insert');
