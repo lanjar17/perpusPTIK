@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\UserModel;
 
 /**
  * Class BaseController
@@ -35,7 +36,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['cookie'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -50,6 +51,17 @@ abstract class BaseController extends Controller
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
+        $cookie = get_cookie('username');
+        if (isset($cookie)) {
+            $userModel = new UserModel();
+            $auth = $userModel->where(['username' => $cookie])->first();
+            $sesi = [
+                'username'      => $auth['username'],
+                'id_users'            => $auth['id_users'],
+                'loggedIn'      => TRUE
+            ];
+            session()->set($sesi);
+        }
 
         // Preload any models, libraries, etc, here.
 

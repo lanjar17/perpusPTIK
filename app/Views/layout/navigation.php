@@ -13,6 +13,9 @@
                 <a href="/user" class="list-group-item list-group-item-action py-2 ripple <?php echo ($menu === "halUser") ? "active" : "" ?>">
                     <i class=" fas fa-chart-area fa-fw me-3"></i><span>Users </span>
                 </a>
+                <a href="<?= base_url('/keluar') ?>" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-arrow-left fa-fw me-3 >"></i><span>Logout</span>
+                </a>
 
             </div>
         </div>
